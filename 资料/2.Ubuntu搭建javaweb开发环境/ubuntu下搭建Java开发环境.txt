@@ -1,0 +1,80 @@
+一、下载JDK（jdk-8u201-linux-x64.tar.gz）
+
+
+二、下载eclipse（eclipse-linux-gtk-x86_64.tar.gz）
+
+
+三、安装JDK
+
+1.检查是否已搭建java开发环境
+  $ java -version
+
+2.创建安装目录
+  $ sudo mkdir /opt/software
+  $ sudo mkdir /opt/software/java
+
+3.移动安装包到安装目录下
+  $ sudo mv eclipse-linux-gtk-x86_64.tar.gz /opt/software/java
+  $ sudo mv jdk-8u201-linux-x64.tar.gz /opt/software/java
+
+4.在安装目录下解压安装包
+  $ sudo tar -xzvf jdk-8u201-linux-x64.tar.gz
+
+5.对profile进行配置
+  $ sudo vim /etc/profile
+export JAVA_HOME=/opt/software/java/jdk1.8.0_201
+export JRE_HOME=/opt/software/java/jdk1.8.0_201/jre
+export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib:$JRE_HOME/lib
+export PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+
+6.使配置生效
+  $ source /etc/profile
+
+7.执行java -version检查是否安装成功
+
+四、安装eclipse
+
+1.在安装目录下解压安装包
+  $ sudo tar -xzvf eclipse-linux-gtk-x86_64.tar.gz 
+
+2.进入刚刚解压的目录
+  $ cd eclipse
+  然后输入命令 $ ./eclipse
+  就会进入eclipse
+
+3.如果报错（A Java Runtime Environment (JRE) or Java Development Kit (JDK) must be available in order to run Eclipse. No Java virtual machine was found after searching the following locations: /opt/software/java/eclipse/jre/bin/java java in your current PATH）
+  $ sudo mkdir jre
+  $ cd jre
+  $ sudo ln -s /opt/software/java/jdk1.8.0_201/bin bin
+  然后 $ cd .. 
+  再次输入命令 $ ./eclipse
+
+五、安装配置Tomcat
+
+1.下载tomcat（apache-tomcat-7.0.93.tar.gz）
+
+2.在下载目录下解压安装包（我的安装包放在/home/clg/soft里面）
+  $ tar -xzvf apache-tomcat-7.0.93.tar.gz 
+
+3.将解压后的文件移动到/opt下并重命名为tomcat7.0
+  $ sudo mv apache-tomcat-7.0.93 /opt/software/java/tomcat7.0
+
+4.cd到/opt/software/java/tomcat7.0直接开启服务（tomcat解压就可以使用了）
+  $ ./bin/startup.sh
+
+5.如果启动报错（Neither the JAVA_HOME nor the JRE_HOME environment variable is defined At least one of these environment variable is needed to run this program）
+  则需给tomcat添加JAVA_HOME和JRE_HOME两个环境变量
+  $ sudo vim ./bin/setclasspath.sh
+  在文件开头加入：
+export JAVA_HOME=/opt/software/java/jdk1.8.0_201
+export JRE_HOME=/opt/software/java/jdk1.8.0_201/jre
+  保存退出，再次 $ ./bin/startup.sh
+  如果显示Tomcat started.则说明启动成功
+
+六、安装Mysql
+  $ sudo apt-get install mysql-server
+  $ sudo apt-get install mysql-client
+  $ sudo apt-get install libmysqlclient-dev
+  执行第一条命令，输入root的密码即可完成安装mysql服务端.
+  第二第三条命令是安装mysql客户端.
+
